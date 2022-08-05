@@ -1,0 +1,13 @@
+Django
+psycopg2
+flake8==4.0.1
+flake8-comprehensions==3.10.0
+flake8-builtins==1.5.3
+flake8-alfred==1.1.1
+flake8-broken-line==0.4.0
+flake8-eradicate==1.2.1
+flake8-mutable==1.2.0
+flake8-variables-names==0.0.5
+django-debug-toolbar
+django-extensions
+ipython

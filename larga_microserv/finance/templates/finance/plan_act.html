@@ -1,0 +1,67 @@
+{% extends 'finance/base.html' %}
+{% load static %}
+{% block content %}
+    <h1>
+        <center>ПЛАН АКТИРОВАНИЯ</center>
+    </h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <div class="row">
+                <div class="col">
+                    <label>Дата начала:</label>{{form.date_start}}
+                </div>
+                <div class="col">
+                    <label> </label>
+                    <center>
+                        <button type="submit" class="btn btn-info">Сформировать</button>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </form>
+    {% if table %}
+    </br>
+    <table class="table table-striped small">
+        <thead align="center">
+            <tr>
+                <th>Дата оплаты</th>
+                <th>Проект</th>
+                <th>Платежный этап</th>
+                <th>Ожидаемые оплаты</th>
+                <th>Расходы</th>
+                <th>Сальдо</th>
+                <th>Нарастающий итог</th>
+                <th>Комментарий</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row_report in report_body %}
+                {% if row_report.project == 'Выплата' %}
+                <tr class="table-success">
+                {% else %}
+                <tr>
+                {% endif %}
+                    <th>{{row_report.d_pay}}</th>
+                    <th>{{row_report.project}}</th>
+                    <th>{{row_report.payment_stages}}</th>
+                    <th>{{row_report.expected_payments}}</th>
+                    <th>{{row_report.coast}}</th>
+                    {% if row_report.variance < 0 %}
+                    <th><div style="color:red">{{row_report.variance}}</div></th>
+                    {% else %}
+                    <th>{{row_report.variance}}</th>
+                    {% endif %}
+                    {% if row_report.progressive_total < 0 %}
+                    <th><div style="color:red">{{row_report.progressive_total}}</div></th>
+                    {% else %}
+                    <th>{{row_report.progressive_total}}</th>
+                    {% endif %}
+                    <th>{{row_report.comment}}</th>
+                </tr>
+        {% endfor %}  
+        </tbody>
+    </table>
+    {% endif %}
+    <script type="text/javascript" src={% static "js/start_and_stop_date.js" %}></script>
+{% endblock %}

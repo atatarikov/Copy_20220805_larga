@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+  db:
+    container_name: c_postgres
+    image: postgres
+#    command: '--default-authentication-plugin=mysql_native_password'
+    restart: always
+    volumes:
+      - db:/data/postgres
+    environment:
+      - POSTGRES_DB=microservice_db
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=LargaNewerSleep5!
+    ports:
+      - "5432:5432"
+
+  django:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    restart: always
+    volumes:
+      - ./:/code_larga_microserv
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  pgadmin:
+    container_name: c_pgadmin
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    volumes:
+      - c_pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: LargaNewerSleep5!
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    depends_on:
+      - db
+
+
+volumes:
+  db:
+  c_pgadmin:
